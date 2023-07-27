@@ -1,7 +1,13 @@
+import 'package:book_authot_search_app/api_services.dart';
 import 'package:flutter/material.dart';
 
 class BookAuthorSearchDelegate extends SearchDelegate {
-  List<String> searchTerms = ['moby dick', 'animal farm', 'the Hobbit'];
+  // temp list to be replaced with the books found under each Author
+  List<String> books = [
+    'The fellowship of the ring',
+    'the two towers',
+    ' the return of the king'
+  ];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -27,9 +33,17 @@ class BookAuthorSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     List<String> matchQuery = [];
 
-    for (var author in searchTerms) {
-      if (author.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(author);
+    getAuthorsBooks() async {
+      return await getAuthor(query);
+    }
+
+    if (query.isNotEmpty) {
+      print(getAuthorsBooks());
+    }
+
+    for (var title in books) {
+      if (title.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(title);
       }
     }
     return ListView.builder(
@@ -45,11 +59,18 @@ class BookAuthorSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
+    getAuthorsBooks() async {
+      return await getAuthor(query);
+    }
 
-    for (var author in searchTerms) {
-      if (author.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(author);
+    List<String> matchQuery = [];
+    if (query.isNotEmpty) {
+      print(getAuthorsBooks());
+    }
+
+    for (var title in books) {
+      if (title.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(title);
       }
     }
     return ListView.builder(
